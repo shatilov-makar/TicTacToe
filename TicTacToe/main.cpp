@@ -3,7 +3,7 @@ using namespace std;
 #include "TreeNode.h"
 #include <iostream>
 
-//Шатилов М.Р.  РИ-280002
+//Shatilov M.R.
 
 
 struct statistic
@@ -47,7 +47,7 @@ statistic* getStatistic(TreeNode node, statistic* stat)
    
     if (node.childCount() == 8 )
     {
-        inputResult(node, stat);
+        outputResult(node, stat);
         stat->draws = 0; stat->winCrosses = 0; stat->winNoughts = 0;
         return stat;
     }
@@ -90,7 +90,7 @@ int main()
     return 0;
 }
 
-void inputResult(TreeNode node, statistic* stat)
+void outputResult(TreeNode node, statistic* stat)
 {
     auto condition = node.value()->operator()(0, 0);
     if (condition == PlayField::cellCondition::csCross)
