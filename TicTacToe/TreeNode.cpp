@@ -1,14 +1,12 @@
 #include "TreeNode.h"
 
 
-    bool TreeNode::isTerminal()
+    bool TreeNode::isTerminal() const
     {
-        if (playField.checkFieldStatus() == PlayField::mapCondition::fsContinue)
-            return false;
-        return true;
+        return  playField.checkFieldStatus() == PlayField::mapCondition::fsContinue ? false : true;
     }
 
-    TreeNode TreeNode::addChild(PlayField::CellIdx indx)
+    TreeNode TreeNode::addChild(PlayField::CellIdx indx) 
     {
         int curChildCount = childCount(); int possibleChildCount = childQty();
         assert(curChildCount = childCount() < possibleChildCount || curChildCount == possibleChildCount);
@@ -18,7 +16,7 @@
         return child;
     }
 
-    int TreeNode::childCount()
+    int TreeNode::childCount() const
     {
         return childrens.size();
     }
@@ -28,7 +26,7 @@
         return &playField;
     }
 
-    int TreeNode::childQty()
+    int TreeNode::childQty() const
     {
         return playField.getEmptyCells().size();
     }
