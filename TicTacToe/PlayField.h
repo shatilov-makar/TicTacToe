@@ -7,47 +7,40 @@ class PlayField
 {
 public:
     enum cellCondition { csEmpty, csCross, csNought };
-    enum mapCondition { fsInvalid, fsCrossesWin, fsNoughtsWin, fsDraw, fsContinue}; // добавил fsContinue для состояния, когда игра продолжается
+    enum mapCondition { fsInvalid, fsCrossesWin, fsNoughtsWin, fsDraw, fsContinue};
     class CellIdx
     {
     public:
-        CellIdx() :row(0), column(0), condition(csEmpty) {};
-        CellIdx(int row, int column, cellCondition cond = csEmpty) :row(row), column(column), condition(cond) {};
-        cellCondition getState() const;
+        CellIdx() :row(0), column(0) {};
+        CellIdx(int row, int column) :row(row), column(column) {};
         int getPosition() const;
     private:
         int row;
         int column;
-        cellCondition condition;
     };
 
-    PlayField()
-    {
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                map[3 * i + j] = CellIdx(i, j);
-    }
     cellCondition operator [] (CellIdx index) const
     {
-        return index.getState();
+        return map[index.getPosition()];
     }
-    cellCondition operator () (int a, int b) const
+    cellCondition operator () (int row, int column) const
     {
-        int f = a * 3 + b;
-        CellIdx ind = map[f];
-        return ind.getState();
+        return map[row * 3 + column];
     };
 
     vector<CellIdx> getEmptyCells() const;
     mapCondition checkFieldStatus() const;
-    PlayField makeMove(CellIdx);
+    PlayField makeMove(CellIdx) const;
+
 private:
-    PlayField operator+ (CellIdx index) const
+    PlayField operator+ (CellIdx index) const 
     {
-        CellIdx index1 = this->map[index.getPosition()];
-        PlayField plf = *this;
-        plf.map[index.getPosition()] = index;
-        return plf;
+        PlayField newField = PlayField(*this);
+        newField.map[index.getPosition()] = getStep();
+        return newField;
     };
-    CellIdx map[9];
+
+    cellCondition map[9]{ csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty };
+
+    cellCondition getStep() const;
 };
