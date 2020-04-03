@@ -3,7 +3,7 @@ using namespace std;
 #include "TreeNode.h"
 #include <iostream>
 
-//Shatilov M.R.
+//Shatilov M.R. 
 
 
 struct statistic
@@ -20,9 +20,8 @@ struct statistic
 };
 
 void makeStep(TreeNode&, statistic*, PlayField::cellCondition);
-void inputResult(TreeNode, statistic*);
 
-statistic* getStatistic(TreeNode node, statistic* stat)
+statistic* getStatistic(TreeNode node, statistic* stat) 
 {
     if (node.isTerminal())
     {
@@ -47,7 +46,7 @@ statistic* getStatistic(TreeNode node, statistic* stat)
    
     if (node.childCount() == 8 )
     {
-        outputResult(node, stat);
+        cout << "You can win in " << stat->winCrosses << " ways,  you can lose in " << stat->winNoughts << " ways, and will be a draw " << stat->draws << " ways" << endl << endl;
         stat->draws = 0; stat->winCrosses = 0; stat->winNoughts = 0;
         return stat;
     }
@@ -62,10 +61,9 @@ void makeStep(TreeNode& node, statistic* stat, PlayField::cellCondition cond)
         auto condition = node.value()->operator()(row, column);
         if (condition == PlayField::cellCondition::csEmpty)
         {
-            auto childNode = node.addChild(PlayField::CellIdx(row, column, cond));
+            auto childNode = node.addChild(PlayField::CellIdx(row, column));
             getStatistic(childNode, stat);
-            if (stat->winNoughts == 0 && stat->winCrosses == 0 && stat->draws == 0)
-                return;
+
         }
     }
 }
@@ -73,35 +71,7 @@ void makeStep(TreeNode& node, statistic* stat, PlayField::cellCondition cond)
 int main()
 {
     TreeNode rootNode(nullptr, PlayField());
-    
-    TreeNode corner(&rootNode, PlayField().makeMove(PlayField::CellIdx(0, 0, PlayField::cellCondition::csCross)));
-    TreeNode top(&rootNode, PlayField().makeMove(PlayField::CellIdx(0, 1, PlayField::cellCondition::csCross)));
-    TreeNode center(&rootNode, PlayField().makeMove(PlayField::CellIdx(1, 1, PlayField::cellCondition::csCross)));
-
-    statistic cornerStat;
-    getStatistic(corner, &cornerStat);
-
-    statistic topStat;
-    getStatistic(top, &topStat);
-
-    statistic centerStat;
-    getStatistic(center, &centerStat);
-
+    statistic statistic;
+    getStatistic(rootNode, &statistic);
     return 0;
-}
-
-void outputResult(TreeNode node, statistic* stat)
-{
-    auto condition = node.value()->operator()(0, 0);
-    if (condition == PlayField::cellCondition::csCross)
-        cout << "x - x" << endl << "- - -" << endl << "x - x" << endl;
-    
-    condition = node.value()->operator()(0, 1);
-    if (condition == PlayField::cellCondition::csCross)
-        cout << "- x -" << endl << "x - x" << endl << "- x -" << endl;
-    
-    condition = node.value()->operator()(1, 1);
-    if (condition == PlayField::cellCondition::csCross)
-        cout << "- - -" << endl << "- x -" << endl << "- - -" << endl;
-    cout << "You can win in " << stat->winCrosses << " ways,  you can lose in " << stat->winNoughts << " ways, and will be a draw " << stat->draws << " ways" << endl << endl;
 }
