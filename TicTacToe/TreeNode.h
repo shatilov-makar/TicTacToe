@@ -5,21 +5,15 @@
 class TreeNode
 {
 public:
-
     TreeNode(TreeNode* parent, PlayField state) :playField(state), parent(parent) {};
- 
-
-    bool isTerminal();
- 
+    bool isTerminal() const;
     TreeNode addChild(PlayField::CellIdx);
-
-    int childCount();
-
+    int childCount() const;
     const PlayField* value() const;
     
 private:
     const PlayField playField;
     const TreeNode* parent;
-    int childQty();
+    int childQty() const;
     vector<TreeNode> childrens;
 };
