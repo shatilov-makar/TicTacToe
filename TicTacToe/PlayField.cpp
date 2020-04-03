@@ -1,77 +1,89 @@
-﻿
+
 #include <cassert>
 #include "PlayField.h"
 
 using namespace std;
 
-PlayField::cellCondition PlayField::CellIdx::getState() const
-{
-    return condition;
-}
 
 int PlayField::CellIdx::getPosition() const
 {
     return  row * 3 + column;
 }
 
-
 vector<PlayField::CellIdx> PlayField::getEmptyCells() const
 {
-    vector<PlayField::CellIdx> emptyCells;
-    for (int i = 0; i < 9; i++)
-    {
-        if (map[i].getState() == PlayField::csEmpty)
-            emptyCells.push_back(map[i]);
-    }
+    vector<CellIdx> emptyCells;
+    for (int i = 0; i < 3; i++)
+        for(int j = 0; j < 3; j++)
+        {
+            if (map[3*i + j] == csEmpty)
+            {
+                CellIdx cell(i,j);
+                emptyCells.push_back(cell);
+            } 
+        }
     return emptyCells;
 }
    
-
 PlayField::mapCondition PlayField::checkFieldStatus() const
 {
     for (int k = 0; k < 9; k += 3)
     {
-        if (map[k].getState() == map[k + 1].getState()
-            && map[k].getState() == map[k + 2].getState())
+        if (map[k] == map[k + 1]
+            && map[k] == map[k + 2])
         {
-            if (map[k].getState() == csCross)
+            if (map[k]== csCross)
                 return fsCrossesWin;
-            if (map[k].getState() == csNought)
+            if (map[k] == csNought)
                 return fsNoughtsWin;
         }
     }
 
     for (int k = 0; k < 3; k++)
     {
-        if (map[k].getState() == map[k + 3].getState() 
-            && map[k].getState() == map[k + 6].getState())
+        if (map[k] == map[k + 3]
+            && map[k] == map[k + 6])
         {
-            if (map[k].getState() == csCross)
+            if (map[k] == csCross)
                 return fsCrossesWin;
-            if (map[k].getState() == csNought)
+            if (map[k] == csNought)
                 return fsNoughtsWin;
         }
     }
 
-    if (map[0].getState() == map[4].getState() && map[0].getState() == map[8].getState()
-        || map[2].getState() == map[4].getState() && map[2].getState() == map[6].getState())
+    if (map[0] == map[4] && map[0] == map[8]
+        || map[2] == map[4] && map[2] == map[6])
     {
-        if (map[4].getState() == csCross)
+        if (map[4] == csCross)
             return fsCrossesWin;
-        if (map[4].getState() == csNought)
+        if (map[4] == csNought)
             return fsNoughtsWin;
     }
 
     for (int i = 0; i < 9; i++)
     {
-        if (map[i].getState() == csEmpty)
+        if (map[i] == csEmpty)
             return fsContinue;
     }
     return fsDraw;
 }
 
-PlayField PlayField::makeMove(PlayField::CellIdx index) 
+PlayField PlayField::makeMove(PlayField::CellIdx index) const
 {
-    assert(this->map[index.getPosition()].getState() == csEmpty && this->checkFieldStatus() == fsContinue);
-    return (*this + index);
+    assert(this->map[index.getPosition()] == csEmpty && this->checkFieldStatus() == fsContinue);
+    return *this + index;
+}
+
+PlayField::cellCondition PlayField::getStep() const
+{
+    int crossCount = 0, noughtCount = 0;
+    for (int i = 0; i < 9; i++) {
+        if (map[i] == csCross) {
+            crossCount++;
+        }
+        if (map[i] == csNought) {
+            noughtCount++;
+        }
+    }
+    return crossCount > noughtCount ? csNought : csCross;
 }
