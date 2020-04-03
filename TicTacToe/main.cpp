@@ -19,7 +19,7 @@ struct statistic
     int draws = 0;
 };
 
-void makeStep(TreeNode&, statistic*, PlayField::cellCondition);
+void makeStep(TreeNode&, statistic*);
 
 statistic* getStatistic(TreeNode node, statistic* stat) 
 {
@@ -39,11 +39,7 @@ statistic* getStatistic(TreeNode node, statistic* stat)
             stat->draws++;
         return stat;
     }
-    if (node.value()->getEmptyCells().size() % 2 == 1)
-        makeStep(node, stat, PlayField::cellCondition::csCross);
-    else
-        makeStep(node, stat, PlayField::cellCondition::csNought);
-   
+    makeStep(node, stat);
     if (node.childCount() == 8 )
     {
         cout << "You can win in " << stat->winCrosses << " ways,  you can lose in " << stat->winNoughts << " ways, and will be a draw " << stat->draws << " ways" << endl << endl;
@@ -52,7 +48,7 @@ statistic* getStatistic(TreeNode node, statistic* stat)
     }
 }
 
-void makeStep(TreeNode& node, statistic* stat, PlayField::cellCondition cond)
+void makeStep(TreeNode& node, statistic* stat)
 {
     int row = 0; int column = 0;
     for (int i = 0; i < 9; i++)
@@ -63,7 +59,6 @@ void makeStep(TreeNode& node, statistic* stat, PlayField::cellCondition cond)
         {
             auto childNode = node.addChild(PlayField::CellIdx(row, column));
             getStatistic(childNode, stat);
-
         }
     }
 }
