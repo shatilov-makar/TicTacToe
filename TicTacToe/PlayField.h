@@ -7,7 +7,7 @@ class PlayField
 {
 public:
     enum cellCondition { csEmpty, csCross, csNought };
-    enum mapCondition { fsInvalid, fsCrossesWin, fsNoughtsWin, fsDraw, fsContinue};
+    enum mapCondition { fsInvalid, fsCrossesWin, fsNoughtsWin, fsDraw, fsContinue };
     class CellIdx
     {
     public:
@@ -17,6 +17,7 @@ public:
     private:
         int row;
         int column;
+        const int sideLength = 3;
     };
 
     cellCondition operator [] (CellIdx index) const
@@ -25,22 +26,23 @@ public:
     }
     cellCondition operator () (int row, int column) const
     {
-        return map[row * 3 + column];
-    };
+        return map[row * sideLength + column];
+    }
 
     vector<CellIdx> getEmptyCells() const;
     mapCondition checkFieldStatus() const;
     PlayField makeMove(CellIdx) const;
 
-private:
-    PlayField operator+ (CellIdx index) const 
+private: 
+    const int sideLength = 3;
+    const  static int countCells = 9;
+    const int centralCellIndex = 4;
+    cellCondition map[countCells] { csEmpty, csEmpty, csEmpty, csEmpty, csEmpty, csEmpty, csEmpty, csEmpty, csEmpty };
+    PlayField operator+ (CellIdx index) const
     {
         PlayField newField = PlayField(*this);
         newField.map[index.getPosition()] = getStep();
         return newField;
-    };
-
-    cellCondition map[9]{ csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty,csEmpty };
-
+    }
     cellCondition getStep() const;
 };
