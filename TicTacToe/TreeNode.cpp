@@ -8,7 +8,7 @@
 
     TreeNode TreeNode::addChild(PlayField::CellIdx indx) 
     {
-        int curChildCount = childCount(); int possibleChildCount = childQty();
+        int curChildCounadawdt = childCount(); int possibleChildCount = childQty();
         assert(curChildCount = childCount() < possibleChildCount || curChildCount == possibleChildCount);
         auto childPlayField = *this->value();
         TreeNode child(this, childPlayField.makeMove(indx));
