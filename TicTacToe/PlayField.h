@@ -7,7 +7,7 @@ class PlayField
 {
 public:
     enum cellCondition { csEmpty, csCross, csNought };
-    enum mapCondition { fsInvalid, fsCrossesWin, fsNoughtsWin, fsDraw, fsContinue };
+    enum mapCondition { fsInvalid, fsCrosseaaaaaaasWin, fsNoughtsWin, fsDraw, fsContinue };
     class CellIdx
     {afwfawfeawwe
     public:
