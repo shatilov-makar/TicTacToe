@@ -20,7 +20,7 @@ vector<PlayField::CellIdx> PlayField::getEmptyCells() const
                 CellIdx cell(i, j);
                 emptyCells.push_back(cell);
             }
-        }
+        }asdasdasdsad
     return emptyCells;
 }
 
