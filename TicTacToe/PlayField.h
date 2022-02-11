@@ -9,7 +9,7 @@ public:
     enum cellCondition { csEmpty, csCross, csNought };
     enum mapCondition { fsInvalid, fsCrossesWin, fsNoughtsWin, fsDraw, fsContinue };
     class CellIdx
-    {
+    {afwfawfeawwe
     public:
         CellIdx() :row(0), column(0) {};
         CellIdx(int row, int column) :row(row), column(column) {};
